@@ -1,6 +1,9 @@
 ## Part I: Ingesting and Storing Token Prices
 The code ingests hourly token prices data for the top 10 tokens by market cap from the Coingecko API from past 7 days and stores it in a PostgreSQL database.
 
+Video Walk Through:
+https://youtu.be/VHAO-m76Jjs
+
 ### PostgreSQL database setup
 ### Assuming PostgreSQL is installed and running
 #### Step 1: Create a new database use PG Admin
