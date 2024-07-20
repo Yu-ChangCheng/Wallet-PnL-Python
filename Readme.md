@@ -3,7 +3,7 @@ The code ingests hourly token prices data for the top 10 tokens by market cap fr
 
 ### PostgreSQL database setup
 ### Assuming PostgreSQL is installed and running
-#### Step 1: Create a new database us PGadmin
+#### Step 1: Create a new database use PG Admin
 Name your database: token_prices_db
 
 #### Step 2: Create a .env file with the following content
