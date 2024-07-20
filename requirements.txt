@@ -1,0 +1,9 @@
+os
+requests
+psycopg2-binary
+python-dotenv
+pandas
+fastapi
+pydantic
+uvicorn
+numpy

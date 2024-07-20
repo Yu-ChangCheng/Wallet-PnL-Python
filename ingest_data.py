@@ -3,6 +3,7 @@ import requests
 import psycopg2
 from dotenv import load_dotenv
 from datetime import datetime
+import argparse
 
 load_dotenv()
 
@@ -44,12 +45,12 @@ def get_db_connection():
     )
 
 # Get top 10 tokens by market cap
-def get_top_10_tokens():
+def get_top_N_tokens(n_token):
     url = 'https://api.coingecko.com/api/v3/coins/markets'
     params = {
         'vs_currency': 'usd',
         'order': 'market_cap_desc',
-        'per_page': 10,
+        'per_page': n_token,
         'page': 1,
         'sparkline': False
     }
@@ -62,11 +63,11 @@ def get_top_10_tokens():
     return [token['id'] for token in data]
 
 # Get hourly data for a token for the past 7 days
-def get_hourly_data(token_id):
+def get_data(token_id, days):
     url = f'https://api.coingecko.com/api/v3/coins/{token_id}/market_chart'
     params = {
         'vs_currency': 'usd',
-        'days': '7'
+        'days': days
     }
     headers = {
         'x-cg-demo-api-key': COINGECKO_API_KEY
@@ -102,18 +103,24 @@ def store_data(token_id, prices):
         conn.close()
 
 # Ingest data for the top 10 tokens
-def ingest_data():
+def ingest_data(days = 7, n_tokens = 10):
     try:
-        top_10_tokens = get_top_10_tokens()
-        for token_id in top_10_tokens:
-            hourly_data = get_hourly_data(token_id)
-            store_data(token_id, hourly_data)
+        top_N_tokens = get_top_N_tokens(n_tokens)
+        for token_id in top_N_tokens:
+            data = get_data(token_id, days)
+            store_data(token_id, data)
             print(f'Data ingested for {token_id}')
     except Exception as error:
         print(f'Error ingesting data: {error}')
 
 # Run the ingestion process
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Ingest data for top N tokens for a specified number of days.')
+    parser.add_argument('--days', type=int, default=7, help='Number of days of historical data to fetch (default: 7)')
+    parser.add_argument('--n_tokens', type=int, default=10, help='Number of top tokens to fetch data for (default: 10)')
+
+    args = parser.parse_args()
+
     create_table_if_not_exists()
-    ingest_data()
+    ingest_data(days=args.days, n_tokens=args.n_tokens)
     
