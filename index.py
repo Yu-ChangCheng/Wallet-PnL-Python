@@ -85,12 +85,12 @@ def merge_historical_prices(token_ids, start_date, end_date):
     merged_df = merged_df.sort_values(by='timestamp')
     return merged_df
 
-def create_holdings_df(balances, timestamps):
+def create_holdings_df(balances, price_timestamps):
     balances_sorted = sorted(balances, key=lambda x: datetime.strptime(x['block_timestamp'], '%Y-%m-%dT%H:%M:%S'))
     
     # Initialize current_holdings with the balances before the first timestamp
     current_holdings = {balance['token_id']: 0 for balance in balances}
-    first_timestamp = timestamps[0]
+    first_timestamp = price_timestamps[0]
     for balance in balances_sorted:
         balance_timestamp = datetime.strptime(balance['block_timestamp'], '%Y-%m-%dT%H:%M:%S')
         if balance_timestamp <= first_timestamp:
@@ -103,7 +103,7 @@ def create_holdings_df(balances, timestamps):
     balance_index = 0
     num_balances = len(balances_sorted)
 
-    for timestamp in timestamps:
+    for timestamp in price_timestamps:
         # Update current_holdings based on the timestamp
         while balance_index < num_balances:
             balance = balances_sorted[balance_index]
