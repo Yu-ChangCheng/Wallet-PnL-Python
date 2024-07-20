@@ -148,7 +148,7 @@ def main_calculate_pnls(wallet_address, start_time = None, end_time = None, deta
               
         # Fetch wallet balances
         balances = get_wallet_balances(wallet_address)
-        print(balances)
+
         # Extract token IDs from balances
         token_ids = list(set(balance['token_id'] for balance in balances))
 
@@ -161,11 +161,9 @@ def main_calculate_pnls(wallet_address, start_time = None, end_time = None, deta
 
         # Create holdings DataFrame
         holdings_df = create_holdings_df(balances, price_df['timestamp'])
-        print(holdings_df)
 
         # Merge holdings with prices
         price_holding_df = pd.merge(price_df, holdings_df, on='timestamp', how='left')
-        print(price_holding_df)
 
         # Calculate value and PnL
         final_df = calculate_value_and_pnl_df(price_holding_df, balances)
@@ -175,8 +173,6 @@ def main_calculate_pnls(wallet_address, start_time = None, end_time = None, deta
             output_df = final_df
         else:
             output_df = final_df[['timestamp', 'PnL']] # Extract only timestamp and PnL columns for the output
-
-        # print(output_df)
 
         return output_df
     except Exception as e:
