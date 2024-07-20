@@ -14,6 +14,7 @@ DB_NAME=token_prices_db
 DB_PASSWORD=your_db_password
 DB_PORT=5432
 COINGECKO_API_KEY=your_coingecko_api_key
+ALLIUM_API_KEY = your_allium_api_key
 ```
 
 #### Step 3: Install the required Python packages

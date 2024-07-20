@@ -19,7 +19,7 @@ DB_HOST = os.getenv('DB_HOST')
 DB_NAME = os.getenv('DB_NAME')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_PORT = os.getenv('DB_PORT')
-API_KEY = os.getenv('API_KEY')
+ALLIUM_API_KEY = os.getenv('ALLIUM_API_KEY')
 
 # Connect to the PostgreSQL database
 def get_db_connection():
@@ -36,7 +36,7 @@ def get_wallet_balances(address):
     url = 'https://api.allium.so/api/v1/explorer/queries/UWHFUe3BPTFpd7EDVIiI/run'
     headers = {
         'Content-Type': 'application/json',
-        'X-API-KEY': API_KEY
+        'X-API-KEY': ALLIUM_API_KEY
     }
     response = requests.post(url, json={'address': address}, headers=headers)
     response.raise_for_status()
